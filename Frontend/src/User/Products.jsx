@@ -118,7 +118,12 @@ const Products = () => {
                     <div onClick={() => navigate(`/user/book/${book._id}`)}>
                       {
                         (() => {
-                          const imageUrl = `${window.BACKEND_URL}/uploads/${encodeURIComponent(book.image || '')}`;
+                          let imageUrl = '';
+                          if (book.image && String(book.image).startsWith('http')) {
+                            imageUrl = book.image;
+                          } else {
+                            imageUrl = `${window.BACKEND_URL}/uploads/${encodeURIComponent(book.image || '')}`;
+                          }
                           return (
                             <img
                               src={imageUrl}
