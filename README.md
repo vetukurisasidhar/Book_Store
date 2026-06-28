@@ -85,9 +85,13 @@ Frontend will run on: **http://localhost:5173**
 ## 📍 Application URLs
 
 - **Main App**: http://localhost:5173
-- **User Portal**: http://localhost:5173/user
-- **Seller Portal**: http://localhost:5173/seller
-- **Admin Portal**: http://localhost:5173/admin
+- **User Login**: http://localhost:5173/user/login
+- **User Dashboard**: http://localhost:5173/user/dashboard
+- **User Products**: http://localhost:5173/user/products
+- **Seller Login**: http://localhost:5173/seller/login
+- **Seller Dashboard**: http://localhost:5173/seller/dashboard
+- **Admin Login**: http://localhost:5173/admin/login
+- **Admin Dashboard**: http://localhost:5173/admin/dashboard
 - **API Server**: http://localhost:8000
 
 ## 👥 Default Test Accounts
