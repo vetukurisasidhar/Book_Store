@@ -116,11 +116,26 @@ const Products = () => {
                 {filteredBooks.map(book => (
                   <div key={book._id} className="glass-card book-store-card animate-fade">
                     <div onClick={() => navigate(`/user/book/${book._id}`)}>
-                      <img 
-                        src={`${window.BACKEND_URL}/uploads/${book.image}`} 
-                        alt={book.title} 
-                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover' }}
-                      />
+                      {
+                        (() => {
+                          const imageUrl = `${window.BACKEND_URL}/uploads/${encodeURIComponent(book.image || '')}`;
+                          return (
+                            <img
+                              src={imageUrl}
+                              alt={book.title}
+                              loading="lazy"
+                              decoding="async"
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover';
+                                e.target.classList.add('img-loaded');
+                              }}
+                              onLoad={(e) => e.target.classList.add('img-loaded')}
+                            />
+                          );
+                        })()
+                      }
                       <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.2rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{book.title}</h3>
                       <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>By {book.author}</p>
                     </div>
