@@ -68,31 +68,42 @@ JWT_SECRET=mySuperSecretKeyForBookStoreApp123!
 
 ## 🎮 Running the Application
 
-### Terminal 1 - Start Backend
+The application is now **deployed and live online!**
+
+### **Live Links:**
+
+**Frontend:** https://book-store-jade-six-31.vercel.app  
+**Backend API:** https://bookstore-production-dae1.up.railway.app
+
+### **Local Development (Optional):**
+
+If you want to run locally:
+
+**Terminal 1 - Start Backend:**
 ```bash
 cd Backend
 npm run dev
 ```
-Backend will run on: **http://localhost:8000**
+Backend runs on: **http://localhost:8000**
 
-### Terminal 2 - Start Frontend
+**Terminal 2 - Start Frontend:**
 ```bash
 cd Frontend
 npm run dev
 ```
-Frontend will run on: **http://localhost:5173**
+Frontend runs on: **http://localhost:5173**
 
-## 📍 Application URLs
+## 📍 Application URLs (Live)
 
-- **Main App**: http://localhost:5173
-- **User Login**: http://localhost:5173/user/login
-- **User Dashboard**: http://localhost:5173/user/dashboard
-- **User Products**: http://localhost:5173/user/products
-- **Seller Login**: http://localhost:5173/seller/login
-- **Seller Dashboard**: http://localhost:5173/seller/dashboard
-- **Admin Login**: http://localhost:5173/admin/login
-- **Admin Dashboard**: http://localhost:5173/admin/dashboard
-- **API Server**: http://localhost:8000
+- **Main App**: https://book-store-jade-six-31.vercel.app
+- **User Login**: https://book-store-jade-six-31.vercel.app/user/login
+- **User Dashboard**: https://book-store-jade-six-31.vercel.app/user/dashboard
+- **User Products**: https://book-store-jade-six-31.vercel.app/user/products
+- **Seller Login**: https://book-store-jade-six-31.vercel.app/seller/login
+- **Seller Dashboard**: https://book-store-jade-six-31.vercel.app/seller/dashboard
+- **Admin Login**: https://book-store-jade-six-31.vercel.app/admin/login
+- **Admin Dashboard**: https://book-store-jade-six-31.vercel.app/admin/dashboard
+- **Backend API Server**: https://bookstore-production-dae1.up.railway.app
 
 ## 👥 Default Test Accounts
 
