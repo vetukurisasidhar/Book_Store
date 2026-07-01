@@ -1,5 +1,5 @@
 {
-  "name": "bookstore-backend",
+  "name": "bookstore-server",
   "version": "1.0.0",
   "description": "BookStore MERN Application Backend",
   "main": "server.js",

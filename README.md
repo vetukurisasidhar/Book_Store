@@ -44,22 +44,22 @@ git clone <your-repo-url>
 cd BOOKSTORE
 ```
 
-### 2. Install Backend Dependencies
+### 2. Install Server Dependencies
 ```bash
-cd Backend
+cd server
 npm install
 ```
 
-### 3. Install Frontend Dependencies
+### 3. Install Client Dependencies
 ```bash
-cd ../Frontend
+cd ../client
 npm install
 ```
 
 ## ⚙️ Configuration
 
-### Backend (.env)
-Create a `.env` file in the `Backend` folder:
+### Server (.env)
+Create a `.env` file in the `server` folder:
 ```env
 PORT=8000
 MONGO_URI=mongodb://localhost:27017/BookStore
@@ -79,19 +79,19 @@ The application is now **deployed and live online!**
 
 If you want to run locally:
 
-**Terminal 1 - Start Backend:**
+**Terminal 1 - Start Server:**
 ```bash
-cd Backend
+cd server
 npm run dev
 ```
-Backend runs on: **http://localhost:8000**
+Server runs on: **http://localhost:8000**
 
-**Terminal 2 - Start Frontend:**
+**Terminal 2 - Start Client:**
 ```bash
-cd Frontend
+cd client
 npm run dev
 ```
-Frontend runs on: **http://localhost:5173**
+Client runs on: **http://localhost:5173**
 
 ## 📍 Application URLs (Live)
 
@@ -144,7 +144,7 @@ Create accounts through the signup pages:
 
 ```
 BOOKSTORE/
-├── Backend/
+├── server/
 │   ├── config/          # Database connection
 │   ├── controllers/      # Route handlers
 │   ├── middlewares/      # Authentication & upload
@@ -153,7 +153,7 @@ BOOKSTORE/
 │   ├── uploads/         # Uploaded files
 │   ├── server.js        # Express app
 │   └── package.json
-├── Frontend/
+├── client/
 │   ├── src/
 │   │   ├── Admin/       # Admin pages
 │   │   ├── Seller/      # Seller pages
