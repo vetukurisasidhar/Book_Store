@@ -5,6 +5,13 @@ const Order = require('../models/Users/MyOrderSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// Helper to normalize image paths for both old and new formats
+const normalizeImage = (imagePath) => {
+  if (!imagePath) return null;
+  // Remove "Backend/uploads/" prefix if it exists (old format)
+  return imagePath.replace(/^Backend\/uploads\//, '');
+};
+
 // User Signup
 exports.signup = async (req, res) => {
   try {
@@ -55,7 +62,13 @@ exports.getBooks = async (req, res) => {
     const activeSellerIds = activeSellers.map(s => s._id);
 
     // Find books belonging to active sellers
-    const books = await Book.find({ seller: { $in: activeSellerIds } }).populate('seller', 'name businessName').lean();
+    let books = await Book.find({ seller: { $in: activeSellerIds } }).populate('seller', 'name businessName').lean();
+    
+    // Normalize images for both old and new formats
+    books = books.map(book => ({
+      ...book,
+      image: normalizeImage(book.image)
+    }));
     
     res.status(200).json(books);
   } catch (error) {
@@ -67,8 +80,12 @@ exports.getBooks = async (req, res) => {
 exports.getBookById = async (req, res) => {
   try {
     const { id } = req.params;
-    const book = await Book.findById(id).populate('seller', 'name businessName').lean();
+    let book = await Book.findById(id).populate('seller', 'name businessName').lean();
     if (!book) return res.status(404).json({ message: 'Book not found' });
+    
+    // Normalize image for both old and new formats
+    book.image = normalizeImage(book.image);
+    
     res.status(200).json(book);
   } catch (error) {
     res.status(500).json({ error: error.message });
