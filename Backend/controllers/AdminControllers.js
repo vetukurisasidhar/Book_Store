@@ -16,7 +16,7 @@ const normalizeImagePath = (imagePath) => {
 // Helper function to normalize book data
 const normalizeBooks = (books) => {
   return books.map(book => ({
-    ...book._doc || book,
+    ...book,
     image: normalizeImagePath(book.image)
   }));
 };
@@ -114,7 +114,7 @@ exports.getAllUsers = async (req, res) => {
 // Get all books in bookstore
 exports.getAllBooks = async (req, res) => {
   try {
-    let books = await Book.find().populate('seller', 'name businessName');
+    let books = await Book.find().populate('seller', 'name businessName').lean();
     
     // Normalize image paths for both old and new formats
     books = normalizeBooks(books);

@@ -15,7 +15,7 @@ const normalizeImagePath = (imagePath) => {
 // Helper function to normalize book data
 const normalizeBooks = (books) => {
   return books.map(book => ({
-    ...book._doc || book,
+    ...book,
     image: normalizeImagePath(book.image)
   }));
 };
@@ -69,8 +69,8 @@ exports.getBooks = async (req, res) => {
     const activeSellers = await Seller.find({ isApproved: true, isBlocked: false }).select('_id');
     const activeSellerIds = activeSellers.map(s => s._id);
 
-    // Find books belonging to active sellers
-    let books = await Book.find({ seller: { $in: activeSellerIds } }).populate('seller', 'name businessName');
+    // Find books belonging to active sellers and convert to plain objects
+    let books = await Book.find({ seller: { $in: activeSellerIds } }).populate('seller', 'name businessName').lean();
     
     // Normalize image paths for both old and new formats
     books = normalizeBooks(books);
@@ -85,14 +85,11 @@ exports.getBooks = async (req, res) => {
 exports.getBookById = async (req, res) => {
   try {
     const { id } = req.params;
-    let book = await Book.findById(id).populate('seller', 'name businessName');
+    let book = await Book.findById(id).populate('seller', 'name businessName').lean();
     if (!book) return res.status(404).json({ message: 'Book not found' });
     
     // Normalize image path
-    book = {
-      ...book._doc,
-      image: normalizeImagePath(book.image)
-    };
+    book.image = normalizeImagePath(book.image);
     
     res.status(200).json(book);
   } catch (error) {
