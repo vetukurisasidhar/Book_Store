@@ -4,21 +4,6 @@ const Order = require('../models/Users/MyOrderSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// Helper function to normalize image paths
-const normalizeImagePath = (imagePath) => {
-  if (!imagePath) return null;
-  // Remove "Backend/uploads/" prefix if it exists
-  return imagePath.replace(/^Backend\/uploads\//, '');
-};
-
-// Helper function to normalize book data
-const normalizeBooks = (books) => {
-  return books.map(book => ({
-    ...book,
-    image: normalizeImagePath(book.image)
-  }));
-};
-
 // Seller Signup
 exports.signup = async (req, res) => {
   try {
@@ -76,7 +61,8 @@ exports.addBook = async (req, res) => {
       return res.status(400).json({ message: 'Book cover image is required' });
     }
 
-    const imageValue = req.file ? req.file.path : null;
+    // Store only filename, not full path
+    const imageValue = req.file.filename;
     const book = new Book({
       title,
       author,
@@ -98,11 +84,7 @@ exports.addBook = async (req, res) => {
 // Get Seller's listed books
 exports.getMyBooks = async (req, res) => {
   try {
-    let books = await Book.find({ seller: req.user.id }).lean();
-    
-    // Normalize image paths for both old and new formats
-    books = normalizeBooks(books);
-    
+    const books = await Book.find({ seller: req.user.id }).lean();
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -125,7 +107,7 @@ exports.updateBook = async (req, res) => {
     book.stock = stock !== undefined ? stock : book.stock;
 
     if (req.file) {
-      book.image = req.file.path;
+      book.image = req.file.filename;
     }
 
     await book.save();
