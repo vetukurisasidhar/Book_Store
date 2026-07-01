@@ -10,20 +10,6 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
-// Debug helpers: log presence of key env vars and catch uncaught errors
-console.log('Starting BookStore API server - debug info');
-console.log('MONGO_URI present?', !!process.env.MONGO_URI);
-console.log('CLOUDINARY_URL present?', !!process.env.CLOUDINARY_URL);
-console.log('PORT (env):', process.env.PORT || 'undefined');
-
-process.on('unhandledRejection', (reason, p) => {
-  console.error('Unhandled Rejection at:', p, 'reason:', reason);
-});
-
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-});
-
 // Connect to Database
 connectDB();
 

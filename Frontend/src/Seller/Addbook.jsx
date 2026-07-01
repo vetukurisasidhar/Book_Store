@@ -57,8 +57,7 @@ const Addbook = () => {
     try {
       await axios.post(window.BACKEND_URL + '/api/sellers/books', data, {
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
+          Authorization: `Bearer ${token}`
         }
       });
       setSuccess('Book listed in catalog successfully!');
