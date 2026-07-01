@@ -68,8 +68,8 @@ exports.addBook = async (req, res) => {
       return res.status(400).json({ message: 'Book cover image is required' });
     }
 
-    // Store only filename, not full path
-    const imageValue = req.file.filename;
+    // Store Cloudinary path if available, else local filename
+    const imageValue = req.file ? (req.file.path || req.file.secure_url || req.file.filename) : null;
     const book = new Book({
       title,
       author,
@@ -121,7 +121,7 @@ exports.updateBook = async (req, res) => {
     book.stock = stock !== undefined ? stock : book.stock;
 
     if (req.file) {
-      book.image = req.file.filename;
+      book.image = req.file.path || req.file.secure_url || req.file.filename;
     }
 
     await book.save();
