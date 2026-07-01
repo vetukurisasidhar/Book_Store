@@ -6,8 +6,9 @@ const Book = ({ book, onEdit, onDelete }) => {
       <div>
         <img 
           src={`${window.BACKEND_URL}/uploads/${book.image}`} 
-          alt={book.title} 
-          onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover' }}
+          alt={book.title}
+          onLoad={(e) => { e.target.classList.add('img-loaded') }}
+          onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover'; e.target.classList.add('img-loaded') }}
         />
         <div className="seller-book-details">
           <h3>{book.title}</h3>

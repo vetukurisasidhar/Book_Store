@@ -195,8 +195,9 @@ const Uhome = () => {
                 <div onClick={() => navigate(`/user/book/${book._id}`)}>
                   <img 
                     src={`${window.BACKEND_URL}/uploads/${book.image}`} 
-                    alt={book.title} 
-                    onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover' }}
+                    alt={book.title}
+                    onLoad={(e) => { e.target.classList.add('img-loaded') }}
+                    onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover'; e.target.classList.add('img-loaded') }}
                   />
                   <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.2rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{book.title}</h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>By {book.author}</p>
