@@ -5,6 +5,21 @@ const Order = require('../models/Users/MyOrderSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// Helper function to normalize image paths
+const normalizeImagePath = (imagePath) => {
+  if (!imagePath) return null;
+  // Remove "Backend/uploads/" prefix if it exists
+  return imagePath.replace(/^Backend\/uploads\//, '');
+};
+
+// Helper function to normalize book data
+const normalizeBooks = (books) => {
+  return books.map(book => ({
+    ...book._doc || book,
+    image: normalizeImagePath(book.image)
+  }));
+};
+
 // User Signup
 exports.signup = async (req, res) => {
   try {
@@ -55,7 +70,11 @@ exports.getBooks = async (req, res) => {
     const activeSellerIds = activeSellers.map(s => s._id);
 
     // Find books belonging to active sellers
-    const books = await Book.find({ seller: { $in: activeSellerIds } }).populate('seller', 'name businessName');
+    let books = await Book.find({ seller: { $in: activeSellerIds } }).populate('seller', 'name businessName');
+    
+    // Normalize image paths for both old and new formats
+    books = normalizeBooks(books);
+    
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -66,8 +85,15 @@ exports.getBooks = async (req, res) => {
 exports.getBookById = async (req, res) => {
   try {
     const { id } = req.params;
-    const book = await Book.findById(id).populate('seller', 'name businessName');
+    let book = await Book.findById(id).populate('seller', 'name businessName');
     if (!book) return res.status(404).json({ message: 'Book not found' });
+    
+    // Normalize image path
+    book = {
+      ...book._doc,
+      image: normalizeImagePath(book.image)
+    };
+    
     res.status(200).json(book);
   } catch (error) {
     res.status(500).json({ error: error.message });

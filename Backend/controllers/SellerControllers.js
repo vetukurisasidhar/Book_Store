@@ -4,6 +4,21 @@ const Order = require('../models/Users/MyOrderSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// Helper function to normalize image paths
+const normalizeImagePath = (imagePath) => {
+  if (!imagePath) return null;
+  // Remove "Backend/uploads/" prefix if it exists
+  return imagePath.replace(/^Backend\/uploads\//, '');
+};
+
+// Helper function to normalize book data
+const normalizeBooks = (books) => {
+  return books.map(book => ({
+    ...book._doc || book,
+    image: normalizeImagePath(book.image)
+  }));
+};
+
 // Seller Signup
 exports.signup = async (req, res) => {
   try {
@@ -83,7 +98,11 @@ exports.addBook = async (req, res) => {
 // Get Seller's listed books
 exports.getMyBooks = async (req, res) => {
   try {
-    const books = await Book.find({ seller: req.user.id });
+    let books = await Book.find({ seller: req.user.id });
+    
+    // Normalize image paths for both old and new formats
+    books = normalizeBooks(books);
+    
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ error: error.message });
