@@ -64,14 +64,23 @@ exports.getBooks = async (req, res) => {
     // Find books belonging to active sellers
     let books = await Book.find({ seller: { $in: activeSellerIds } }).populate('seller', 'name businessName').lean();
     
+    console.log(`[DEBUG] Found ${books.length} books from active sellers`);
+    
     // Normalize images for both old and new formats
-    books = books.map(book => ({
-      ...book,
-      image: normalizeImage(book.image)
-    }));
+    books = books.map(book => {
+      const normalized = {
+        ...book,
+        image: normalizeImage(book.image)
+      };
+      if (book._id) {
+        console.log(`[DEBUG] Book: ${book.title || 'Unknown'}, Original image: ${book.image}, Normalized: ${normalized.image}`);
+      }
+      return normalized;
+    });
     
     res.status(200).json(books);
   } catch (error) {
+    console.error('[ERROR] getBooks:', error);
     res.status(500).json({ error: error.message });
   }
 };
