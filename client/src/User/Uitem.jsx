@@ -80,7 +80,7 @@ const Uitem = () => {
           </div>
         )}
 
-        <div className="glass-card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2.5rem', width: '100%', maxWidth: '850px' }}>
+        <div className="glass-card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', width: '100%', maxWidth: '850px' }}>
           {/* Cover image container */}
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <img 
@@ -117,7 +117,7 @@ const Uitem = () => {
               </div>
 
               {book.stock > 0 ? (
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '130px' }}>
                     <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Qty:</label>
                     <input 

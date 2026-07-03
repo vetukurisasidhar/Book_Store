@@ -250,3 +250,91 @@ input:focus, select:focus, textarea:focus {
     display: block;
   }
 }
+
+/* Collapsible Mobile Navigation Classes */
+.hamburger-toggle {
+  display: block;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  transition: transform 0.2s ease;
+  line-height: 1;
+}
+
+.hamburger-toggle:hover {
+  color: var(--primary);
+}
+
+@media (min-width: 768px) {
+  .hamburger-toggle {
+    display: none;
+  }
+}
+
+.nav-brand-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .nav-brand-wrapper {
+    width: auto;
+  }
+}
+
+.nav-links-menu {
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.nav-links-menu.open {
+  display: flex;
+}
+
+@media (min-width: 768px) {
+  .nav-links-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    gap: 1.5rem;
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Global Mobile Responsiveness Typography & Spacing Scale */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem !important;
+  }
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  .container {
+    padding: 0 1rem;
+  }
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.7rem !important;
+  }
+  h2 {
+    font-size: 1.35rem !important;
+  }
+}
