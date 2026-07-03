@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Snavbar from './Snavbar';
 import Footer from '../Components/Footer';
+import { getBookImageUrl, handleImageError } from '../utils/image';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -94,10 +95,10 @@ const Orders = () => {
                   {order.books.map((item, index) => (
                     <div key={index} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                       <img 
-                        src={`${window.BACKEND_URL}/uploads/${item.book?.image}`} 
+                        src={getBookImageUrl(item.book?.image)} 
                         alt={item.book?.title} 
                         style={{ width: '40px', height: '55px', objectFit: 'cover', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)' }}
-                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover' }}
+                        onError={(e) => handleImageError(e, '150x220')}
                       />
                       <div style={{ flexGrow: 1 }}>
                         <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>{item.book?.title || 'Unknown Book'}</h4>

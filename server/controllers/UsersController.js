@@ -7,9 +7,12 @@ const jwt = require('jsonwebtoken');
 
 // Helper to normalize image paths for both old and new formats
 const normalizeImage = (imagePath) => {
-  if (!imagePath) return null;
-  // Remove "Backend/uploads/" prefix if it exists (old format)
-  return imagePath.replace(/^Backend\/uploads\//, '');
+  if (!imagePath) return '';
+  if (String(imagePath).startsWith('http://') || String(imagePath).startsWith('https://')) {
+    return imagePath;
+  }
+  const parts = String(imagePath).split(/[/\\]/);
+  return parts[parts.length - 1];
 };
 
 // User Signup

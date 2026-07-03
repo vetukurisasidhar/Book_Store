@@ -152,7 +152,7 @@ const MyProducts = () => {
                   <label style={{ display: 'block', marginBottom: '0.3rem', color: 'var(--text-secondary)' }}>Author Name</label>
                   <input type="text" name="author" required value={editFormData.author} onChange={handleEditChange} />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+                <div className="responsive-grid-3">
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.3rem', color: 'var(--text-secondary)' }}>Genre</label>
                     <select name="genre" value={editFormData.genre} onChange={handleEditChange}>

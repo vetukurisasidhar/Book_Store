@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../Components/Footer';
+import Unavbar from '../Components/Unavbar';
+import { getBookImageUrl, handleImageError } from '../utils/image';
 import './uhome.css';
 
 const Products = () => {
@@ -55,18 +57,7 @@ const Products = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div className="container flex-between" style={{ padding: '1rem 1.5rem' }}>
-          <Link to="/user/dashboard" style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--primary)' }}>
-            BookStore
-          </Link>
-          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-            <Link to="/user/dashboard" style={{ color: 'var(--text-secondary)' }}>Storefront</Link>
-            <Link to="/user/orders" style={{ color: 'var(--text-secondary)' }}>My Orders</Link>
-            <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }} onClick={() => navigate('/user/dashboard')}>Back to Dashboard</button>
-          </div>
-        </div>
-      </header>
+      <Unavbar />
 
       <main className="container animate-fade" style={{ flexGrow: 1, padding: '2rem 1.5rem' }}>
         {message && (
@@ -87,11 +78,11 @@ const Products = () => {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '2rem' }}>
+        <div className="products-layout-grid">
           {/* Side Genres Panel */}
           <div>
-            <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>Categories</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <h3 className="categories-title" style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>Categories</h3>
+            <div className="categories-panel">
               {genres.map(genre => (
                 <button 
                   key={genre} 
@@ -116,31 +107,14 @@ const Products = () => {
                 {filteredBooks.map(book => (
                   <div key={book._id} className="glass-card book-store-card animate-fade">
                     <div onClick={() => navigate(`/user/book/${book._id}`)}>
-                      {
-                        (() => {
-                          let imageUrl = '';
-                          if (book.image && String(book.image).startsWith('http')) {
-                            imageUrl = book.image;
-                          } else {
-                            imageUrl = `${window.BACKEND_URL}/uploads/${encodeURIComponent(book.image || '')}`;
-                          }
-                          return (
-                            <img
-                              src={imageUrl}
-                              alt={book.title}
-                              loading="lazy"
-                              decoding="async"
-                              referrerPolicy="no-referrer"
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover';
-                                e.target.classList.add('img-loaded');
-                              }}
-                              onLoad={(e) => e.target.classList.add('img-loaded')}
-                            />
-                          );
-                        })()
-                      }
+                      <img
+                        src={getBookImageUrl(book.image)}
+                        alt={book.title}
+                        loading="lazy"
+                        decoding="async"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => handleImageError(e, '150x220')}
+                      />
                       <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.2rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{book.title}</h3>
                       <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>By {book.author}</p>
                     </div>

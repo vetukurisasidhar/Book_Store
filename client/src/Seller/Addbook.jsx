@@ -84,7 +84,7 @@ const Addbook = () => {
           {success && <div style={{ color: 'var(--success)', marginBottom: '1rem' }}>{success}</div>}
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="responsive-grid-2">
               <div>
                 <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Book Title</label>
                 <input type="text" name="title" required value={formData.title} onChange={handleChange} placeholder="e.g., The Hobbit" />
@@ -95,7 +95,7 @@ const Addbook = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+            <div className="responsive-grid-3">
               <div>
                 <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Genre</label>
                 <select name="genre" value={formData.genre} onChange={handleChange}>

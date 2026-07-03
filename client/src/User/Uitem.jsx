@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../Components/Footer';
+import Unavbar from '../Components/Unavbar';
+import { getBookImageUrl, handleImageError } from '../utils/image';
 
 const Uitem = () => {
   const { id } = useParams();
@@ -69,18 +71,7 @@ const Uitem = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div className="container flex-between" style={{ padding: '1rem 1.5rem' }}>
-          <Link to="/user/dashboard" style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--primary)' }}>
-            BookStore
-          </Link>
-          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-            <Link to="/user/dashboard" style={{ color: 'var(--text-secondary)' }}>Storefront</Link>
-            <Link to="/user/products" style={{ color: 'var(--text-secondary)' }}>Catalog</Link>
-            <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }} onClick={() => navigate('/user/dashboard')}>Storefront</button>
-          </div>
-        </div>
-      </header>
+      <Unavbar />
 
       <main className="container animate-fade" style={{ flexGrow: 1, padding: '3rem 1.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {message && (
@@ -93,10 +84,10 @@ const Uitem = () => {
           {/* Cover image container */}
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <img 
-              src={`${window.BACKEND_URL}/uploads/${book.image}`} 
+              src={getBookImageUrl(book.image)} 
               alt={book.title} 
               style={{ width: '100%', maxWidth: '280px', height: 'auto', maxHeight: '400px', objectFit: 'cover', borderRadius: '8px', boxShadow: 'var(--shadow-lg)', backgroundColor: 'var(--bg-tertiary)' }}
-              onError={(e) => { e.target.src = 'https://via.placeholder.com/280x400?text=No+Cover' }}
+              onError={(e) => handleImageError(e, '280x400')}
             />
           </div>
 

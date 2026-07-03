@@ -18,19 +18,19 @@ const Anavbar = () => {
 
   return (
     <header style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 0, zIndex: 100 }}>
-      <div className="container flex-between" style={{ padding: '1rem 1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+      <div className="container nav-container" style={{ padding: '1rem 1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           <Link to="/admin/dashboard" style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--danger)', letterSpacing: '0.5px' }}>
             BookStore <span style={{ fontSize: '0.8rem', padding: '0.2rem 0.5rem', backgroundColor: '#dc2626', color: '#fff', borderRadius: '4px', marginLeft: '0.4rem', verticalAlign: 'middle' }}>Admin</span>
           </Link>
-          <nav style={{ display: 'flex', gap: '1.5rem', fontSize: '0.95rem', fontWeight: 500, color: 'var(--text-secondary)' }}>
+          <nav className="nav-links">
             <Link to="/admin/dashboard" style={{ padding: '0.3rem 0', ...isActive('/admin/dashboard') }}>Dashboard</Link>
             <Link to="/admin/sellers" style={{ padding: '0.3rem 0', ...isActive('/admin/sellers') }}>Sellers</Link>
             <Link to="/admin/users" style={{ padding: '0.3rem 0', ...isActive('/admin/users') }}>Users</Link>
             <Link to="/admin/books" style={{ padding: '0.3rem 0', ...isActive('/admin/books') }}>Books</Link>
           </nav>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Welcome, <strong>{name}</strong></span>
           <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>Log Out</button>
         </div>

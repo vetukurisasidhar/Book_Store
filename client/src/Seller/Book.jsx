@@ -1,14 +1,14 @@
 import React from 'react';
+import { getBookImageUrl, handleImageError } from '../utils/image';
 
 const Book = ({ book, onEdit, onDelete }) => {
   return (
     <div className="glass-card seller-book-card animate-fade">
       <div>
         <img 
-          src={`${window.BACKEND_URL}/uploads/${book.image}`} 
+          src={getBookImageUrl(book.image)} 
           alt={book.title}
-          onLoad={(e) => { e.target.classList.add('img-loaded') }}
-          onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover'; e.target.classList.add('img-loaded') }}
+          onError={(e) => handleImageError(e, '150x220')}
         />
         <div className="seller-book-details">
           <h3>{book.title}</h3>

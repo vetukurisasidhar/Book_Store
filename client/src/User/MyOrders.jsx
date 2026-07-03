@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../Components/Footer';
 import OrderItem from './OrderItem';
+import Unavbar from '../Components/Unavbar';
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -43,18 +44,7 @@ const MyOrders = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div className="container flex-between" style={{ padding: '1rem 1.5rem' }}>
-          <Link to="/user/dashboard" style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--primary)' }}>
-            BookStore
-          </Link>
-          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-            <Link to="/user/dashboard" style={{ color: 'var(--text-secondary)' }}>Storefront</Link>
-            <Link to="/user/products" style={{ color: 'var(--text-secondary)' }}>Catalog</Link>
-            <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }} onClick={() => navigate('/user/dashboard')}>Storefront</button>
-          </div>
-        </div>
-      </header>
+      <Unavbar />
 
       <main className="container animate-fade" style={{ flexGrow: 1, padding: '2.5rem 1.5rem', maxWidth: '800px' }}>
         <h1 style={{ marginBottom: '1.5rem', fontSize: '1.8rem', fontWeight: 600 }}>My Purchase Registry</h1>

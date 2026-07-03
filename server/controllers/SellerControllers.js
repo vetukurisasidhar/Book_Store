@@ -6,9 +6,12 @@ const jwt = require('jsonwebtoken');
 
 // Helper to normalize image paths for both old and new formats
 const normalizeImage = (imagePath) => {
-  if (!imagePath) return null;
-  // Remove "Backend/uploads/" prefix if it exists (old format)
-  return imagePath.replace(/^Backend\/uploads\//, '');
+  if (!imagePath) return '';
+  if (String(imagePath).startsWith('http://') || String(imagePath).startsWith('https://')) {
+    return imagePath;
+  }
+  const parts = String(imagePath).split(/[/\\]/);
+  return parts[parts.length - 1];
 };
 
 // Seller Signup
@@ -68,8 +71,8 @@ exports.addBook = async (req, res) => {
       return res.status(400).json({ message: 'Book cover image is required' });
     }
 
-    // Store Cloudinary path if available, else local filename
-    const imageValue = req.file ? (req.file.path || req.file.secure_url || req.file.filename) : null;
+    // Store Cloudinary URL path if Cloudinary is configured, else just local filename
+    const imageValue = req.file ? (process.env.CLOUDINARY_URL ? (req.file.path || req.file.secure_url) : req.file.filename) : null;
     const book = new Book({
       title,
       author,
@@ -121,7 +124,7 @@ exports.updateBook = async (req, res) => {
     book.stock = stock !== undefined ? stock : book.stock;
 
     if (req.file) {
-      book.image = req.file.path || req.file.secure_url || req.file.filename;
+      book.image = process.env.CLOUDINARY_URL ? (req.file.path || req.file.secure_url) : req.file.filename;
     }
 
     await book.save();

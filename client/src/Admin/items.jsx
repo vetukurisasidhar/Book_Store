@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Anavbar from './Anavbar';
 import Footer from '../Components/Footer';
+import { getBookImageUrl, handleImageError } from '../utils/image';
 
 const Items = () => {
   const [books, setBooks] = useState([]);
@@ -67,10 +68,10 @@ const Items = () => {
             {books.map((book) => (
               <div key={book._id} className="glass-card animate-fade" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                 <img 
-                  src={`${window.BACKEND_URL}/uploads/${book.image}`} 
+                  src={getBookImageUrl(book.image)} 
                   alt={book.title} 
                   style={{ width: '70px', height: '100px', objectFit: 'cover', borderRadius: '6px', backgroundColor: 'var(--bg-tertiary)' }}
-                  onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover' }}
+                  onError={(e) => handleImageError(e, '150x220')}
                 />
                 <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                   <div>

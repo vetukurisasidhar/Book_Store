@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../Components/Footer';
+import Unavbar from '../Components/Unavbar';
+import { getBookImageUrl, handleImageError } from '../utils/image';
 import './uhome.css';
 
 const Uhome = () => {
@@ -13,7 +15,6 @@ const Uhome = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  const userName = localStorage.getItem('userName') || 'Reader';
 
   const genres = ['All', 'Fiction', 'Non-fiction', 'Science', 'Romance', 'Children', 'Biography', 'History'];
 
@@ -46,11 +47,7 @@ const Uhome = () => {
     fetchCart();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('userName');
-    navigate('/');
-  };
+
 
   const addToCart = async (bookId) => {
     const token = localStorage.getItem('userToken');
@@ -121,27 +118,7 @@ const Uhome = () => {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Header Navbar */}
-      <header style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div className="container flex-between" style={{ padding: '1rem 1.5rem' }}>
-          <Link to="/user/dashboard" style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--primary)', letterSpacing: '0.5px' }}>
-            BookStore
-          </Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <Link to="/user/products" style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Browse All</Link>
-            <Link to="/user/orders" style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>My Orders</Link>
-            <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', position: 'relative' }} onClick={() => setIsCartOpen(true)}>
-              🛒 Cart
-              {cart.length > 0 && (
-                <span style={{ position: 'absolute', top: '-5px', right: '-5px', backgroundColor: 'var(--accent)', color: '#000', borderRadius: '50%', padding: '0.1rem 0.4rem', fontSize: '0.75rem', fontWeight: 700 }}>
-                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
-                </span>
-              )}
-            </button>
-            <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Hello, <strong>{userName}</strong></span>
-            <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>Log Out</button>
-          </div>
-        </div>
-      </header>
+      <Unavbar cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)} onCartClick={() => setIsCartOpen(true)} />
 
       {/* Main Body */}
       <main className="container animate-fade" style={{ flexGrow: 1, padding: '2rem 1.5rem' }}>
@@ -194,10 +171,9 @@ const Uhome = () => {
               <div key={book._id} className="glass-card book-store-card animate-fade">
                 <div onClick={() => navigate(`/user/book/${book._id}`)}>
                   <img 
-                    src={`${window.BACKEND_URL}/uploads/${book.image}`} 
+                    src={getBookImageUrl(book.image)} 
                     alt={book.title}
-                    onLoad={(e) => { e.target.classList.add('img-loaded') }}
-                    onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover'; e.target.classList.add('img-loaded') }}
+                    onError={(e) => handleImageError(e, '150x220')}
                   />
                   <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.2rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{book.title}</h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>By {book.author}</p>
@@ -232,10 +208,10 @@ const Uhome = () => {
                   cart.map(item => (
                     <div key={item._id} style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
                       <img 
-                        src={`${window.BACKEND_URL}/uploads/${item.book?.image}`} 
+                        src={getBookImageUrl(item.book?.image)} 
                         alt={item.book?.title} 
                         style={{ width: '40px', height: '55px', objectFit: 'cover', borderRadius: '4px' }}
-                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150x220?text=No+Cover' }}
+                        onError={(e) => handleImageError(e, '150x220')}
                       />
                       <div style={{ flexGrow: 1 }}>
                         <h4 style={{ fontSize: '0.9rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>{item.book?.title}</h4>

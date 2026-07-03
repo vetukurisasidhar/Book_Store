@@ -18,20 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded book cover images static folder
-// Redirect requests for remote URLs (e.g. Cloudinary) hosted via local path prefix
-app.use('/uploads', (req, res, next) => {
-  const target = req.url.slice(1); // remove leading slash
-  if (target.startsWith('http://') || target.startsWith('https://')) {
-    return res.redirect(target);
-  }
-  const decodedTarget = decodeURIComponent(target);
-  if (decodedTarget.startsWith('http://') || decodedTarget.startsWith('https://')) {
-    return res.redirect(decodedTarget);
-  }
-  next();
-});
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // Routes
 app.use('/api/admin', adminRoutes);
@@ -41,6 +28,11 @@ app.use('/api/users', userRoutes);
 // Basic Route for verification
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the BookStore API server!' });
+});
+
+// Catch-all route for unrecognized endpoints
+app.use((req, res, next) => {
+  res.status(404).json({ message: `Route not found: ${req.originalUrl}` });
 });
 
 // Global Error Handler
