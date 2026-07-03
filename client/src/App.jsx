@@ -3,29 +3,52 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Components/Home';
 import ProtectedRoute from './Components/ProtectedRoute';
 
+// Helper wrapper to dynamically load components with a retry mechanism.
+// If a deployment happens and older chunks are wiped, loading them will throw an error.
+// We catch the error, force a page reload to pull the new index.html (which points to current active chunks),
+// and recover gracefully instead of showing a blank screen or a 404 error page.
+const lazyWithRetry = (componentImport) =>
+  lazy(async () => {
+    const hasRetried = window.sessionStorage.getItem('chunk_retry_occurred');
+    try {
+      const result = await componentImport();
+      window.sessionStorage.removeItem('chunk_retry_occurred');
+      return result;
+    } catch (error) {
+      if (!hasRetried) {
+        window.sessionStorage.setItem('chunk_retry_occurred', 'true');
+        console.warn('Failed to load chunk. Force reloading page to fetch latest build...', error);
+        window.location.reload();
+        return new Promise(() => {}); // Return a pending promise to prevent rendering half-loaded views
+      }
+      console.error('Failed to load chunk even after reload:', error);
+      throw error;
+    }
+  });
+
 // Admin Pages (Lazy Loaded)
-const Alogin = lazy(() => import('./Admin/Alogin'));
-const Asignup = lazy(() => import('./Admin/Asignup'));
-const Ahome = lazy(() => import('./Admin/Ahome'));
-const SellerManager = lazy(() => import('./Admin/Seller'));
-const UsersManager = lazy(() => import('./Admin/Users'));
-const AdminItems = lazy(() => import('./Admin/items'));
+const Alogin = lazyWithRetry(() => import('./Admin/Alogin'));
+const Asignup = lazyWithRetry(() => import('./Admin/Asignup'));
+const Ahome = lazyWithRetry(() => import('./Admin/Ahome'));
+const SellerManager = lazyWithRetry(() => import('./Admin/Seller'));
+const UsersManager = lazyWithRetry(() => import('./Admin/Users'));
+const AdminItems = lazyWithRetry(() => import('./Admin/items'));
 
 // Seller Pages (Lazy Loaded)
-const Slogin = lazy(() => import('./Seller/Slogin'));
-const Ssignup = lazy(() => import('./Seller/Ssignup'));
-const Shome = lazy(() => import('./Seller/Shome'));
-const AddBook = lazy(() => import('./Seller/Addbook'));
-const MyProducts = lazy(() => import('./Seller/MyProducts'));
-const SellerOrders = lazy(() => import('./Seller/Orders'));
+const Slogin = lazyWithRetry(() => import('./Seller/Slogin'));
+const Ssignup = lazyWithRetry(() => import('./Seller/Ssignup'));
+const Shome = lazyWithRetry(() => import('./Seller/Shome'));
+const AddBook = lazyWithRetry(() => import('./Seller/Addbook'));
+const MyProducts = lazyWithRetry(() => import('./Seller/MyProducts'));
+const SellerOrders = lazyWithRetry(() => import('./Seller/Orders'));
 
 // User/Customer Pages (Lazy Loaded)
-const UserLogin = lazy(() => import('./User/Login'));
-const UserSignup = lazy(() => import('./User/Signup'));
-const Uhome = lazy(() => import('./User/Uhome'));
-const ProductsCatalog = lazy(() => import('./User/Products'));
-const BookDetail = lazy(() => import('./User/Uitem'));
-const UserOrders = lazy(() => import('./User/MyOrders'));
+const UserLogin = lazyWithRetry(() => import('./User/Login'));
+const UserSignup = lazyWithRetry(() => import('./User/Signup'));
+const Uhome = lazyWithRetry(() => import('./User/Uhome'));
+const ProductsCatalog = lazyWithRetry(() => import('./User/Products'));
+const BookDetail = lazyWithRetry(() => import('./User/Uitem'));
+const UserOrders = lazyWithRetry(() => import('./User/MyOrders'));
 
 function App() {
   return (
